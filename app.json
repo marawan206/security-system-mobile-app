@@ -31,6 +31,12 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "9269ef4e-6b31-4f54-b207-e6efdd3f2911"
+      }
+    },
+    "owner": "marawan206"
   }
 }
