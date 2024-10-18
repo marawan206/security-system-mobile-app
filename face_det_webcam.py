@@ -5,8 +5,8 @@ import psutil
 # Function to perform face detection and recognition
 def main(video_source=0):
     # Load your pre-trained model files
-    config_file = "E:/ENGR YEAR 4/Semster 8/ECEN 493 Grad 1/Face recognetion model/Final_models/deploy.prototxt"  # Update the path
-    model_file = "E:/ENGR YEAR 4/Semster 8/ECEN 493 Grad 1/Face recognetion model/Final_models/res10_300x300_ssd_iter_140000_fp16.caffemodel"  # Update the path
+    config_file = "./deploy.prototxt"  # Update the path
+    model_file = "./res10_300x300_ssd_iter_140000_fp16.caffemodel"  # Update the path
     
     try:
         # Load the DNN model from Caffe
