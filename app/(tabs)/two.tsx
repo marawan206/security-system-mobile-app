@@ -1,31 +1,83 @@
-import { StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, Image, Text } from 'react-native';
 
-import EditScreenInfo from '@/components/EditScreenInfo';
-import { Text, View } from '@/components/Themed';
+const TabTwo = () => {
+  const [image, setImage] = useState<string | null>(null);
 
-export default function TabTwoScreen() {
+  useEffect(() => {
+    const ws = new WebSocket('ws://localhost:8765'); // Adjust the WebSocket URL if necessary
+
+    ws.onmessage = (event) => {
+      setImage(event.data); // Set the received image data
+    };
+
+    ws.onclose = () => {
+      console.log('WebSocket connection closed.');
+    };
+
+    // Cleanup on component unmount
+    return () => {
+      ws.close();
+    };
+  }, []);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab Two</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/two.tsx" />
+      <View style={styles.frameContainer}>
+        <View style={styles.imageContainer}>
+          {image ? (
+            <Image
+              source={{ uri: `data:image/jpeg;base64,${image}` }}
+              style={styles.image}
+              resizeMode="contain"
+            />
+          ) : (
+            <Text style={styles.placeholderText}>Unauthorized person's picture will be displayed here</Text>
+          )}
+        </View>
+      </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f8f8f8',
+    padding: 16,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
+  frameContainer: {
+    width: 300,
+    height: 300,
+    borderRadius: 20,
+    padding: 10,
+    borderWidth: 3,
+    borderColor: '#000',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#e0e0e0',
   },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+  imageContainer: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 15,
+    overflow: 'hidden',
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+  },
+  placeholderText: {
+    color: '#333',
+    fontSize: 16,
+    textAlign: 'center',
+    paddingHorizontal: 16,
   },
 });
+
+export default TabTwo;
